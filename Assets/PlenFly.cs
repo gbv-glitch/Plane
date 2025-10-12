@@ -1,4 +1,5 @@
 using System;
+using JetBrains.Annotations;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -45,6 +46,17 @@ public class PlenFly : MonoBehaviour
 
         //Siin me pöörame oma kaamerat mängija järel
         mainCameraGuidePosition.Rotate(0, horizontalInput * Time.deltaTime * 25, 0);
+
+        //Siin me muudame mängija kiirust
+        planeSpeed += Input.mouseScrollDelta.y;
+
+        //Selleks et mängija ei saaks kohal seista, kontrollime, kas lennukiirus on väiksem kui 15. Kui on, siis me paneme selle 15ks.
+        if(planeSpeed <= 15)
+        {
+            planeSpeed = 15;
+        }
+
+        print((Input.mouseScrollDelta.y, planeSpeed));
     }
     
 }
