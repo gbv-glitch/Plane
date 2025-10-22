@@ -1775,11 +1775,11 @@ Transform:
   m_GameObject: {fileID: 722147910}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.8220778, y: -0.24206, z: -0.46119}
-  m_LocalScale: {x: 2.9, y: 0.3, z: 0.05}
+  m_LocalPosition: {x: -1.8220778, y: 0, z: 0}
+  m_LocalScale: {x: 2.9000003, y: 0.3, z: 0.05}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2087424951}
+  m_Father: {fileID: 934912043}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &722147913
 BoxCollider:
@@ -2128,6 +2128,39 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &934912042
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 934912043}
+  m_Layer: 0
+  m_Name: Elovon Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &934912043
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 934912042}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.24206, z: -0.46119}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1868478059}
+  - {fileID: 722147911}
+  m_Father: {fileID: 2087424951}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1192595534
 GameObject:
@@ -3727,11 +3760,11 @@ Transform:
   m_GameObject: {fileID: 1868478058}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.822078, y: -0.24206, z: -0.46119}
-  m_LocalScale: {x: 2.9, y: 0.3, z: 0.05}
+  m_LocalPosition: {x: 1.8220778, y: 0, z: 0}
+  m_LocalScale: {x: 2.9000003, y: 0.3, z: 0.05}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2087424951}
+  m_Father: {fileID: 934912043}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1868478061
 BoxCollider:
@@ -4342,8 +4375,6 @@ Transform:
   m_LocalScale: {x: 0.6784562, y: 0.6738, z: 5.197379}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 722147911}
-  - {fileID: 1868478059}
   - {fileID: 1923551303}
   - {fileID: 1857130616}
   - {fileID: 1927861690}
@@ -4354,6 +4385,7 @@ Transform:
   - {fileID: 1271256913}
   - {fileID: 1508231096}
   - {fileID: 1577456501}
+  - {fileID: 934912043}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2087424952
@@ -4371,8 +4403,8 @@ MonoBehaviour:
   mainCameraGuidePosition: {fileID: 1410318616}
   leftCanard: {fileID: 1271256913}
   rightCanard: {fileID: 1577456501}
-  rightElevon: {fileID: 1868478059}
-  leftElevon: {fileID: 722147911}
+  rightElevon: {fileID: 934912042}
+  leftElevon: {fileID: 934912042}
   playerPosition: {fileID: 2087424951}
   planeSpeed: 20
   pause: 0
