@@ -4,6 +4,8 @@ using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Controls;
+using UnityEngine.UI;
 using UnityEngine.UnityConsent;
 
 public class PlaneControls : MonoBehaviour
@@ -30,6 +32,9 @@ public class PlaneControls : MonoBehaviour
     private float horizontalInput;
     private float verticalInput;
 
+    //Püssikuul
+    public GameObject bulletPrefab;
+
     //Pausile panemise võimalus
     public bool pause = false;
 
@@ -37,7 +42,7 @@ public class PlaneControls : MonoBehaviour
     private void Update()
     {
         //Siin me vaatame, kas mäng on pausile pandud
-        if (pause == true)
+        if (pause == false)
         {    //Liigutame  lennuki edasi
             transform.position += transform.forward * planeSpeed * Time.deltaTime;//Viimane on seal, et kõigil oleks ükskõik mis arvutil sama kiirus
 
@@ -72,6 +77,13 @@ public class PlaneControls : MonoBehaviour
             if (planeSpeed <= 15)
             {
                 planeSpeed = 15;
+            }
+
+            //Siin me tulistame, kui mängija vajutab hiirele
+
+            if (Input.GetMouseButton(0))
+            {
+                print("pewpew");
             }
         }
 
