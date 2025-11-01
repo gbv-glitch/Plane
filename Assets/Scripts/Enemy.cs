@@ -5,16 +5,19 @@ using UnityEngine.UIElements;
 
 public class Enemy : MonoBehaviour
 {
+    //See on meie mängija
     public Transform target;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-    }
 
-    // Update is called once per frame
+    // Seda koodi me jookseme alati
     void Update()
     {
+        // Liigutame vastase edasi
+        transform.position += transform.forward * Time.deltaTime * 15;
+
+        //Siin me arvutame, kuhu me peame pöörama
         Quaternion targetRotation = Quaternion.LookRotation(target.position - transform.position);
+        
+        //Siin me pöörame vastast
         transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, 60 * Time.deltaTime);
     }
 }
