@@ -1,17 +1,31 @@
 using System;
 using JetBrains.Annotations;
+using TMPro;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 using UnityEngine.UnityConsent;
 
 public class PlaneControls : MonoBehaviour
 {
+    //Kuulide arv
+    public float bullets = 600;
+
+    //Kuulide arvu näitaja ekraanil
+    public TextMeshProUGUI bulletCounter;
+
+    //Kuulide arv kuni kahur ei tööta enam
+    public TextMeshProUGUI gunOverheatCounter;
+
     //Kaamera "giidi" positioon
     public Transform mainCameraGuidePosition;
+
+    //Me vaatame, mitu kuuli on mängija korraga tulistanud
+    public float bulletsInOneBurst = 0;
 
     //Lennuki osade positioon
     public Transform leftCanard;
@@ -50,8 +64,11 @@ public class PlaneControls : MonoBehaviour
     //Pausile panemise võimalus
     public bool pause = false;
 
-    //Kahuri laskmiskiiruse vähendamine
+    //Kahuri laskmiskiiruse vähendamiseks
     public bool readyToShoot = true;
+
+    //Kontrollimiseks, ega me pea ootama kuni paneme ennast jälle valmis tulistama
+    public bool overheated = false;
 
     //Selle koodi me jookseme ühe korra mängu alguses
     void Start()
@@ -111,23 +128,71 @@ public class PlaneControls : MonoBehaviour
                 planeSpeedPercent = 100;
             }
 
-            //Siin me tulistame, kui mängija vajutab hiirele ja kontrollime, kas me oleme tulistamiseks valmis
+            //Siin me tulistame, kui mängija vajutab hiirele, kui me oleme tulistamiseks valmis ja kui meil on veel kuuli alles
 
-            if (Input.GetMouseButton(0) & readyToShoot)
+            if (Input.GetMouseButton(0) && readyToShoot && bullets > 0)
             {
                 //Tekitame uue kuuli
                 GameObject bullet = Instantiate(bulletPrefab, bulletSpawn.position, transform.rotation);
                 bullet.GetComponent<Bullet>().hostTag = "Player";
 
-                //Mängime laskmisheli
+                //Võtame kuulide arvust ühe ära
+                bullets -= 1f;
+
+                //Paneme ühe juurde meie kuulide korraga tulistamise lugejale
+                bulletsInOneBurst += 1;
+                
+                //Mängime püssiheli
                 bulletSound.PlayOneShot(bulletSound.clip);
 
                 //Selleks, et me ei saaks tulistada kohe pärast tulistamist
                 readyToShoot = false;
+            }
 
-                //Paneme ennast valmis tulistama peale 0,1 sekundi
-                Invoke("ReadyToShoot", 0.1f);
+            //Kontrollime, kas mängija laseb laskmise nupust lahti
+            if (Input.GetMouseButtonUp(0))
+            {
+                //Paneme korraga tulistatud kuulide lugeja nulli
+                bulletsInOneBurst = 0;
+            }
 
+            //Kontrollime, kas mängija on liiga palju kuule tulistanud korraga
+            if (bulletsInOneBurst >= 50)
+            {
+                //Selleks, et me järgmine kaader kohe ei saa tulistada
+                overheated = true;
+
+                //Tühistame olemasolevad invoke-kutsed, et vältida nende kogunemist
+                CancelInvoke("ReadyToShoot");
+                
+                //Paneme ennast valmis tulistama peale 10 sekundi
+                Invoke("ReadyToShoot", 10f);
+            }
+            //Muidu me oleme valmis jälle tulistama pärast 0,5 sekundit (normaalne tulistamine)
+            else if (!overheated)
+            {
+                //Paneme ennast valmis tulistama peale 0,5 sekundi
+                Invoke("ReadyToShoot", 0.5f);
+            }
+
+            //Siin me näitame, mitu kuuli on mängijal alles
+            bulletCounter.text = "Bullets left: " + bullets;
+
+            //Siin me näitame, mitu kuuli on kuni meie kahur saab liiga kuumaks
+            gunOverheatCounter.text = "Bullets until overheating:" + MathF.Abs(50 - bulletsInOneBurst);
+            
+            //Siin me muudame teksti värvi, vastavalt sellele, kui lähedal me oleme ülekuumenemisele
+            //Kontrollime, kas me peame muutma värvi kollaseks
+            if (bulletsInOneBurst >= 15)
+            {
+                //Siin me muudame värvi
+                gunOverheatCounter.color = new UnityEngine.Color(255, 255, 0);
+            }
+            //Kontrollime, kas me peame värvi oranžiks
+            if (bulletsInOneBurst >= 30)
+            {
+                //Muudame värvi
+                gunOverheatCounter.color = new UnityEngine.Color(255, 127.5f, 0);
             }
         }
 
@@ -144,10 +209,20 @@ public class PlaneControls : MonoBehaviour
             }
         }
     }
-    
+
+    //Tulistamiseks valmis panemine
     public void ReadyToShoot()
     {
+        //Paneme lugeja nulli ainult siis, kui kahur oli ülekuumenenud
+        if (overheated)
+        {
+            bulletsInOneBurst = 0;
+        }
+        
+        //Paneme enda muutuja falseks, et see saaks uuesti tööle hakata
+        overheated = false;
+        
+        //Paneme ennast tulistamiseks valmis
         readyToShoot = true;
     }
-    
 }
